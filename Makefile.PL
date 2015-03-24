@@ -13,11 +13,13 @@ requires 'Net::SSLeay'    => 1.35;
 requires 'Time::Piece'    => 1.20;
 requires 'HTTP::Request::Common'   => 6.04;
 requires 'Data::Recursive::Encode' => 0.04;
+requires 'Scalar::Util'   => 0;
 
 tests 't/*.t';
 author_tests 'xt';
 
 test_requires 'Test::More' => 0.98;
+test_requires 'Test::Fatal' => 0;
 auto_set_repository;
 auto_include;
 WriteAll;

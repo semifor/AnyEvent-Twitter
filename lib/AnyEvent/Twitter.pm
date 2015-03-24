@@ -14,6 +14,7 @@ use Time::Piece;
 use AnyEvent::HTTP;
 use HTTP::Request::Common 'POST';
 use Data::Recursive::Encode;
+use Scalar::Util 'reftype';
 
 use Net::OAuth;
 use Net::OAuth::ProtectedResourceRequest;
@@ -79,7 +80,7 @@ sub request {
     my $url_base = $RESOURCE_URL_BASE{ $self->{api_version} };
     my $url = $opt{url} || sprintf $url_base, $opt{api};
 
-    ref $cb eq 'CODE'
+    ref $cb && reftype $cb eq 'CODE'
         or Carp::croak "callback coderef is required";
 
     my $params = $opt{params} || {};
@@ -175,7 +176,7 @@ sub get_request_token {
         defined $args{$item} or Carp::croak "$item is required";
     }
 
-    ref $args{cb} eq 'CODE'
+    ref $args{cb} && reftype $args{cb} eq 'CODE'
         or Carp::croak "cb must be callback coderef";
 
     $args{auth} ||= 'authorize';
@@ -211,7 +212,7 @@ sub get_access_token {
         defined $args{$item} or Carp::croak "$item is required";
     }
 
-    ref $args{cb} eq 'CODE'
+    ref $args{cb} && reftype $args{cb} eq 'CODE'
         or Carp::croak "cb must be callback coderef";
 
     my $req = __PACKAGE__->_make_oauth_request(
